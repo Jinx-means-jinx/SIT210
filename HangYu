@@ -1,0 +1,121 @@
+SYSTEM_THREAD(ENABLED);
+const pin_t LED = D7;
+String Name[] = {"H","A","N","G","Y","U"};
+
+void setup() 
+{
+    
+pinMode(LED,OUTPUT);
+
+}
+
+void dot()
+{
+    digitalWrite(LED, HIGH);
+    delay(250ms);
+    
+    digitalWrite(LED, LOW);
+    delay(250ms);
+}
+
+void dash()
+{
+    digitalWrite(LED, HIGH);
+    delay(1000ms);
+    
+    digitalWrite(LED, LOW);
+    delay(1000ms);
+}
+
+void BlinkName()
+{
+   for(int i = 0; i < 7; i++)
+    {
+         
+        
+        for(int j = 0; j < Name[i].length(); j++)
+        {
+        if(Name[i] == "A")
+        {
+            A();
+        }
+        
+        else if (Name[i] == "H")
+        {
+            H();
+        }
+        
+        else if (Name[i] == "N")
+        {
+            N();
+        }
+        
+        else if (Name[i] == "G")
+        {
+            G();
+        }
+        
+        else if (Name[i] == "Y")
+        {
+            Y();
+        }
+        
+        else if (Name[i] == "U")
+        {
+            U();
+        }
+        
+        delay(1000);
+        }
+    }
+}
+
+
+void H()
+{
+ 
+  dot(); dot(); dot(); dot();
+    
+}
+
+void A()
+{
+    
+    dot(); dash();
+    
+}
+
+void N()
+{
+    
+    dash(); dot();
+    
+}
+
+void G()
+{
+    
+    dash(); dash(); dot();
+    
+}
+
+void Y()
+{
+    
+    dash(); dot(); dash(); dash();
+    
+}
+
+void U()
+{
+    
+    dot(); dot(); dash();
+    
+}
+
+
+void loop() {
+    
+    BlinkName();
+
+}
