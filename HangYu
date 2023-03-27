@@ -1,11 +1,15 @@
 SYSTEM_THREAD(ENABLED);
 const pin_t LED = D7;
 String Name[] = {"H","A","N","G","Y","U"};
+const int button = D4;
+int State = 0;
+
 
 void setup() 
 {
     
 pinMode(LED,OUTPUT);
+pinMode(button, INPUT_PULLUP);
 
 }
 
@@ -116,6 +120,11 @@ void U()
 
 void loop() {
     
-    BlinkName();
+    State = digitalRead(button);
+    if(State == LOW)
+    {
+        BlinkName(); 
+    }
+   
 
 }
