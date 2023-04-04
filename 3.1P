@@ -1,1 +1,28 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <Adafruit_Sensor.h>
 
+// This #include statement was automatically added by the Particle IDE.
+#include <DHT.h>
+
+int DHTPIN = D5;
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() 
+{
+
+  Serial.begin(9600);
+  dht.begin();
+  
+}
+
+void loop() 
+{
+
+  delay(2000);
+  float temperature = dht.readTemperature();
+  Particle.publish("temp", String(temperature), PRIVATE);
+  delay(2000);
+  
+}
