@@ -1,1 +1,66 @@
+import RPi.GPIO as GPIO
+import time
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QFont
+
+Green = 8
+Red = 10
+Blue = 12
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(Green, GPIO.OUT)
+GPIO.setup(Red, GPIO.OUT)
+GPIO.setup(Blue, GPIO.OUT)
+
+def greenButton():
+    allLEDOff()
+    GPIO.output(Green, GPIO.HIGH)
+    
+def redButton():
+    allLEDOff()
+    GPIO.output(Red, GPIO.HIGH)
+    
+def blueButton():
+    allLEDOff()
+    GPIO.output(Blue, GPIO.HIGH)
+    
+def allLEDOff():
+    GPIO.output(Green, GPIO.LOW)
+    GPIO.output(Red, GPIO.LOW)
+    GPIO.output(Blue, GPIO.LOW)
+    
+def press_exit_button():
+    allLEDOff()
+    app.quit()
+
+def window():
+    app = QApplication([])
+    window = QWidget()
+    window.setGeometry(300, 300, 250, 350)
+    window.setWindowTitle("5.2C")
+
+    layout = QVBoxLayout()
+
+    buttonGreen = QPushButton("Green")
+    buttonRed = QPushButton("Red")
+    buttonBlue = QPushButton("Blue")
+    buttonExit = QPushButton ("Exit")
+    
+    buttonGreen.clicked.connect(greenButton)
+    buttonRed.clicked.connect(redButton)
+    buttonBlue.clicked.connect(blueButton)
+    buttonExit.clicked.connect(exitButton)
+
+    layout.addWidget(buttonGreen)
+    layout.addWidget(buttonRed)
+    layout.addWidget(buttonBlue)
+    layout.addWidget(buttonExit)
+
+    window.setLayout(layout)
+
+    window.show()
+    app.exec_()
+
+if True:
+  window()
 
