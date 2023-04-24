@@ -1,1 +1,115 @@
+import RPi.GPIO as GPIO
+import time
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QFont
+
+LED = 8
+Limit = 12
+morseCode = {
+    'A':'.-',
+    'B':'-...',
+    'C':'-.-.',
+    'D':'-..',
+    'E':'.',
+    'F':'..-.',
+    'G':'--.',
+    'H':'....',
+    'I':'..',
+    'J':'.---',
+    'K':'-.-',
+    'L':'.-..',
+    'M':'--',
+    'N':'-.',
+    'O':'---',
+    'P':'.--.',
+    'Q':'--.-',
+    'R':'.-.',
+    'S':'...',
+    'T':'-',
+    'U':'..-',
+    'V':'...-',
+    'W':'.--',
+    'X':'-..-',
+    'Y':'-.--',
+    'Z':'--..',
+    '1':'.----',
+    '2':'..---',
+    '3':'...--',
+    '4':'....-',
+    '5':'.....',
+    '6':'-....',
+    '7':'--...',
+    '8':'---..',
+    '9':'----.',
+    '0':'-----',
+}
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(LED, GPIO.OUT)
+
+def dot():  
+    GPIO.output(LED, GPIO.HIGH)
+    delay = 0.25
+    GPIO.output(LED, GPIO.Low)
+    delay = 0.25
+    
+def dash()
+    GPIO.output(LED, GPIO.HIGH)
+    delay = 1
+    GPIO.output(LED, GPIO.Low)
+    delay = 1
+       
+def blink(text)
+    word = ''
+    if text:
+        if len(text) <= Limit
+            text = text.upper
+            for letter in text:
+                word = morseCode[letter] + ''
+                for signal in morseCode[letter]
+                    if（signal == '.')
+                        dot()
+                    else if(signal == '-')
+                        dash()
+                    else:
+                        return 'Please Enter A Word!'
+        else:
+        return 'The Word Must Get Less Than 12 Letters!'                      
+    
+def confirmButton():
+    
+     
+def exitButton():
+    allLEDOff()
+    app.quit()
+
+def window():
+    app = QApplication([])
+    window = QWidget()
+    window.setGeometry(300, 300, 250, 350)
+    window.setWindowTitle("5.3D")
+
+    layout = QVBoxLayout()
+
+    buttonConfirm = QPushButton ("Confirm")
+    buttonExit = QPushButton ("Exit")
+    
+    buttonConfirm.clicked.connect(confirmButton)
+    buttonExit.clicked.connect(exitButton)
+
+class MyWindow(QMainWindow):
+    def__init__(self):
+        super(MyWindow, self).__init__()
+        
+
+    window.setLayout(layout)
+
+    window.show()
+    app.exec_()
+
+if True:
+  window()
+
+
+
 
