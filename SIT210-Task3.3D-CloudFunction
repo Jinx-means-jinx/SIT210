@@ -1,1 +1,111 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <MQTT.h>
 
+#define LED D7
+#define PIN_TRIG  D2
+#define PIN_ECHO D3
+
+void callback(char* topic, byte* payload, unsigned int length);
+MQTT client("broker.emqx.io", 1883, callback);
+ 
+void callback(char* topic, byte* payload, unsigned int length)
+{
+    
+char p[length + 1];
+memcpy(p, payload, length);
+p[length] = NULL;
+
+if (!strcmp(p, "wave"))
+{
+      flashWave();
+}
+else if(!strcmp(p, "pat"))
+{
+    flashPat();
+}
+delay(1000);
+
+}
+
+void flashWave()
+{
+    digitalWrite(LED, HIGH);
+    delay(250ms);
+    
+    digitalWrite(LED, LOW);
+    delay(250ms);
+    
+    digitalWrite(LED, HIGH);
+    delay(250ms);
+    
+    digitalWrite(LED, LOW);
+    delay(250ms);
+    
+    digitalWrite(LED, HIGH);
+    delay(250ms);
+    
+    digitalWrite(LED, LOW);
+    delay(250ms);
+}
+
+void flashPat()
+{
+    digitalWrite(LED, HIGH);
+    delay(1000ms);
+    
+    digitalWrite(LED, LOW);
+    delay(1000ms);
+    
+    digitalWrite(LED, HIGH);
+    delay(1000ms);
+    
+    digitalWrite(LED, LOW);
+    delay(1000ms);
+}
+
+void detect()
+{
+    long runTime, distance;
+    digitalWrite(PIN_TRIG, LOW);
+    delayMicroseconds(2);
+    digitalWrite(PIN_TRIG, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(PIN_TRIG, LOW);
+    
+    runTime = pulseIn(PIN_ECHO, HIGH);
+    distance = runTime/2/29;
+    
+    if(distance<=60)
+    {
+        client.publish("SIT210/wave","HangYu");
+        delay(500);
+    }
+ 
+    
+}
+
+void setup() {
+    Serial.begin(9600);
+    client.connect("11");
+   
+    if (client.isConnected()) 
+    {
+        client.publish("SIT210/wave","connected");
+        Serial.print("connected");
+        Particle.publish("connected");
+        client.subscribe("SIT210/wave/#");
+    }
+
+    pinMode(LED, OUTPUT);
+    pinMode(PIN_TRIG, OUTPUT);
+    pinMode(PIN_ECHO, INPUT);
+    Serial.begin(9600);
+}
+
+void loop() {
+    if (client.isConnected())
+    {
+        client.loop();
+    }
+    detect();
+}
