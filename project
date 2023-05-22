@@ -59,13 +59,13 @@ void loop()
         
     if (lightlevel >= 100 && sunrise == false)
     {
-        sleep = true;
+        sunrise = true;
         digitalWrite(Buzzer, HIGH);
         Alert = 0;
     }
     else if (lightlevel < 100 && sunrise == true)
     {
-        sleep = false;
+        sunrise = false;
         Alert = 20;
     }
     
