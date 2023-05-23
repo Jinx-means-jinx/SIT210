@@ -1,0 +1,31 @@
+import RPi.GPIO as GPIO
+import time
+import paho.mqtt.client as mqtt
+
+GPIO.setwarnings(False)
+Alert = 8
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(Alert, GPIO.OUT)
+GPIO.output(Alert, GPIO.HIGH)
+
+def on_connect(client, userdata, flags, rc):
+    client.subscribe("project/AlertOn")
+  
+        
+def on_message(client, userdata, msg):
+    print(f"{msg.payload}")
+    if(msg.payload == 'No message'):
+        print("off")
+        GPIO.output(Alert, GPIO.HIGH)
+    else:
+        print("on")
+        GPIO.output(Alert, GPIO.LOW)
+        
+
+client = mqtt.Client()
+
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect("broker.emqx.io", 1883, 60)
+client.loop_forever()
