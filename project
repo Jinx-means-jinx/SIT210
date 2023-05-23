@@ -1,15 +1,28 @@
 // This #include statement was automatically added by the Particle IDE.
+#include <MQTT.h>
+
+// This #include statement was automatically added by the Particle IDE.
 #include <BH1750Lib.h>
 
 #define PIN_TRIG  D5
 #define PIN_ECHO D6
-#define LED D7
-#define Buzzer D3
+
 
 int Alert = 0;
 bool sunrise = false;
 BH1750Lib lightSensor;
 
+void callback(char* topic, byte* payload, unsigned int length);
+MQTT client("broker.emqx.io", 1883, callback);
+ 
+void callback(char* topic, byte* payload, unsigned int length)
+{
+    
+char p[length + 1];
+memcpy(p, payload, length);
+p[length] = NULL;
+
+}
 
 void detect()
 {
@@ -27,14 +40,9 @@ void detect()
    
     if(distance <= Alert)
     {
-        
-        digitalWrite(LED, HIGH);
-        delay(250ms);
-    
-        digitalWrite(LED, LOW);
-        delay(250ms);
-        
-        digitalWrite(Buzzer, LOW);
+
+        client.publish("project/AlertOn","AlertOn");
+
         delay(200);
     }   
 }
@@ -45,10 +53,18 @@ void setup()
   Serial.begin(9600);
   lightSensor.begin(BH1750LIB_MODE_CONTINUOUSHIGHRES);
   
+  client.connect("99");
+   
+    if (client.isConnected()) 
+    {
+        client.publish("project/AlertOn","AlertOn");
+        Serial.print("AlertOn");
+        Particle.publish("AlertOn");
+        client.subscribe("project/AlertOn/#");
+    }
+  
   pinMode(PIN_TRIG, OUTPUT);
   pinMode(PIN_ECHO, INPUT);
-  pinMode(Buzzer, OUTPUT);
-  pinMode(LED, OUTPUT);
   
 }
 
@@ -60,7 +76,6 @@ void loop()
     if (lightlevel >= 100 && sunrise == false)
     {
         sunrise = true;
-        digitalWrite(Buzzer, HIGH);
         Alert = 0;
     }
     else if (lightlevel < 100 && sunrise == true)
